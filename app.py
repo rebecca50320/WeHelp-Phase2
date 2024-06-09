@@ -16,7 +16,7 @@ cursor = mydb.cursor()
 
 ## APIs for Taipei-Day-Trip
 # search attractions by keyword
-@app.get("/attractions")
+@app.get("/api/attractions")
 async def get_attraction(request: Request,keyword: Optional[str] = Query(None),page: int = 0):
 	try:
 		page_size = 12
@@ -51,7 +51,7 @@ async def get_attraction(request: Request,keyword: Optional[str] = Query(None),p
 		raise HTTPException(status_code=500, detail="internal error")
 	
 # search attraction by id
-@app.get("/attraction/{attractionId}")
+@app.get("/api/attraction/{attractionId}")
 async def get_attractionbyID(request: Request,attractionId:int):
 	try:
 		sql_command = 'select * from attraction where id = %s'
@@ -80,7 +80,7 @@ async def get_attractionbyID(request: Request,attractionId:int):
 		raise HTTPException(status_code=500, detail="Internal Error")
 
 # 取得所有捷運站名稱列表，按照週邊景點的數量由大到小排序
-@app.get("/mrts")
+@app.get("/api/mrts")
 async def get_mrt(request:Request):
 	try:
 		sql_command = 'select mrt,count(*) as cnt from attraction where mrt is not null group by mrt order by cnt desc'
