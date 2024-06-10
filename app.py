@@ -79,7 +79,7 @@ async def get_attractionbyID(request: Request,attractionId:int):
 			"mrt": result[6],
 			"lat": result[7],
 			"lng": result[8],
-			"images":result[9]
+			"images":image_url(result[9])
 		}
 		return {"data":data}
 	
