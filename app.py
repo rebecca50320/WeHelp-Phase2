@@ -141,39 +141,6 @@ async def thankyou(request: Request):
 
 
 
-# page = 1
-# keyword = None
-
-# page_size = 12
-# start = page * page_size
-# end = (page+1)*page_size
-# if keyword:
-# 	sql_command = 'select * from attraction where name like %s or mrt = %s limit %s offset %s'
-# 	cursor.execute(sql_command,(f'%{keyword}%',keyword,page_size,start))
-# 	result = cursor.fetchall()
-# else:
-# 	sql_command = 'select * from attraction limit %s offset %s'
-# 	cursor.execute(sql_command,(page_size,start))
-# 	result = cursor.fetchall()
-# attraction_list = []
-# for row in result:
-# 	attraction = {
-# 		"id": row[0],
-# 		"name": row[1],
-# 		"category": row[2],
-# 		"description": row[3],
-# 		"address": row[4],
-# 		"transport": row[5],
-# 		"mrt": row[6],
-# 		"lat": row[7],
-# 		"lng": row[8],
-# 		"images":image_url(row[9])
-# 	}
-# 	attraction_list.append(attraction)
-# next_page = page+1 if end < len(attraction_list) else None
-
-# print(type(attraction_list[0]['images']))
-
 
 
 
