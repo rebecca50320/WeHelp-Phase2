@@ -25,7 +25,7 @@ def get_imgURL(file_list):
         if url[-3:].lower() == "png" or url[-3:].lower() == "jpg":
             #print(url)
             img_list.append("https://"+url)
-    return str(img_list)
+    return json.dumps(img_list)
 
 
 ## 將data存入DB

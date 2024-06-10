@@ -14,6 +14,16 @@ mydb = mysql.connector.connect(
 )
 cursor = mydb.cursor()
 
+## functions
+def image_url(url_str):
+	split = url_str.split("\"")
+	url_list = []
+	for url in split:
+		if "http" in url:
+			url_list.append(url)
+	return url_list
+
+
 ## APIs for Taipei-Day-Trip
 # search attractions by keyword
 @app.get("/api/attractions")
@@ -42,7 +52,7 @@ async def get_attraction(request: Request,keyword: Optional[str] = Query(None),p
 				"mrt": row[6],
 				"lat": row[7],
 				"lng": row[8],
-				"images":row[9]
+				"images":image_url(row[9])
 			}
 			attraction_list.append(attraction)
 		next_page = page+1 if len(result) > page_size else None
@@ -130,6 +140,7 @@ async def thankyou(request: Request):
 
 
 
+
 # page = 1
 # keyword = None
 
@@ -139,7 +150,6 @@ async def thankyou(request: Request):
 # if keyword:
 # 	sql_command = 'select * from attraction where name like %s or mrt = %s limit %s offset %s'
 # 	cursor.execute(sql_command,(f'%{keyword}%',keyword,page_size,start))
-# 	print(page_size,start)
 # 	result = cursor.fetchall()
 # else:
 # 	sql_command = 'select * from attraction limit %s offset %s'
@@ -157,12 +167,14 @@ async def thankyou(request: Request):
 # 		"mrt": row[6],
 # 		"lat": row[7],
 # 		"lng": row[8],
-# 		"images":row[9]
+# 		"images":image_url(row[9])
 # 	}
 # 	attraction_list.append(attraction)
 # next_page = page+1 if end < len(attraction_list) else None
 
-# #print(attraction_list[0]['id'])
+# print(type(attraction_list[0]['images']))
 
-# for row in attraction_list:
-# 	print(row['id'])
+
+
+
+
