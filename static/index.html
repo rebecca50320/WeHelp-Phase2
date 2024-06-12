@@ -169,18 +169,24 @@
             //create detail box
             var detailbox = document.createElement("div");
             detailbox.classList.add('l-detail');
-            //create info box
+            //create info box-mrt
             var infobox_1 = document.createElement("div");
-            infobox.classList.add('l-info');
+            infobox_1.classList.add('l-info');
             var info_mrt = document.createElement("p");
             info_mrt.textContent = item["mrt"]
+            info_mrt.classList.add('p-left');
             infobox_1.appendChild(info_mrt);
-
-            detailbox.appendChild(infobox_1);
+            //create info box-cat
+            var infobox_2 = document.createElement("div");
+            infobox_2.classList.add('l-info');
+            var info_cat = document.createElement("p");
+            info_cat.classList.add('p-right');
+            info_cat.textContent = item["category"]
+            infobox_2.appendChild(info_cat);
             
-
-
-
+            detailbox.appendChild(infobox_1);
+            detailbox.appendChild(infobox_2);
+            
             bigbox.appendChild(imagebox);
             bigbox.appendChild(detailbox);
             att_container.appendChild(bigbox);
