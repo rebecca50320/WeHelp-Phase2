@@ -4,8 +4,207 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  <!-- Header: Navigation -->
+  <div class="l-container">
+    <div class="l-navigation">
+      <div class="l-title">
+        <h2>台北一日遊</h2>
+      </div>
+      <div class="l-navbar">
+        <div class="l-bookbutton">
+          <a href="">預定行程</a>
+        </div>
+        <div class="l-loginbutton">
+          <a href="">登入/註冊</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Visual: Hero Section -->
+  <div class="l-herosection">
+      <div class="l-slogan">
+        <div class="l-slogancontext">
+          <h3>輕鬆享受台北一日悠閒</h3>
+          <p>探索每個角落，體驗城市的深度旅遊行程</p>
+        </div>
+        <div class="l-searchbox">
+          <div class="m-searchbar">
+            <div class="l-inputfield">
+              <input type="text" placeholder="輸入景點名稱查詢">
+            </div>
+            <div class="l-searchfield">
+              <button type="submit"><img src="static/img/search.png"></button>
+            </div>  
+          </div>
+          </div>
+        </div>
+      
+  </div>
+
+
+  <!-- Content: Main -->
+  <div class="l-main">
+    <div class="m-listbar">
+      <div class="l-iconcontainer">
+        <button><img src="static/img/default_left.png"></button>
+      </div>
+      <div class="l-listcontainer">
+        <!-- 排版用 待換js -->
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <div class="l-mrt">
+          <p>劍潭</p>
+        </div>
+        <!-- 排版用 待換js -->
+      </div>
+      <div class="l-iconcontainer">
+        <button><img src="/static/img/default_right.png"></button>
+      </div>
+    </div>
+    
+    <div id="att_container" class="m-attractions"></div>
+    <!-- <div id="bigbox" class="l-bigbox"></div> -->
+      <!-- <div id="bigbox" class="l-bigbox">
+        <div class="l-image">  
+          <div class="l-name">
+            <p>平安鐘</p>
+          </div>
+        </div>
+        <div class="l-detail">
+          <div class="l-info">
+            <p class="p-left">東門</p>
+          </div>
+          <div class="l-info">
+            <p class="p-right">藝文場所</p>
+          </div>
+        </div>
+      </div> -->
+    
+    <script>
+      window.onload = get_ArractData();
+      function get_ArractData(){
+        fetch('/api/attractions').then(function(response){
+          return response.json();
+        }).then(function(data){
+          const att_container = document.querySelector("#att_container");
+          // console.log(data["data"][0]["images"][0]);
+          box_cnt = data["data"].length
+          for (let i=0; i< box_cnt; i++){
+            let item = data["data"][i];
+            // create big box
+            var bigbox = document.createElement("div");
+            bigbox.classList.add('l-bigbox');
+            //create image box
+            var imagebox = document.createElement("div");
+            imagebox.classList.add('l-image');
+            var imgElement = document.createElement("img");
+            imgElement.src = item["images"][0];
+            imagebox.appendChild(imgElement);
+            // create attraction name box
+            var namebox = document.createElement("div");
+            namebox.classList.add('l-name');
+            var nameElement = document.createElement("p");
+            nameElement.textContent = item["name"];
+            namebox.appendChild(nameElement);
+            imagebox.append(namebox);
+            //create detail box
+            var detailbox = document.createElement("div");
+            detailbox.classList.add('l-detail');
+            //create info box
+            var infobox_1 = document.createElement("div");
+            infobox.classList.add('l-info');
+            var info_mrt = document.createElement("p");
+            info_mrt.textContent = item["mrt"]
+            infobox_1.appendChild(info_mrt);
+
+            detailbox.appendChild(infobox_1);
+            
+
+
+
+            bigbox.appendChild(imagebox);
+            bigbox.appendChild(detailbox);
+            att_container.appendChild(bigbox);
+
+          }
+
+
+
+
+        })
+      }
+                
+            
+    </script>
+
+  </div>
+
+
+  <!-- Footer -->
+  <div class="l-footer">
+    <div class="l-textbox">
+      <p>COPYRIGHT © 2024 台北一日遊</p>
+    </div>
+  </div>
   
 </body>
 </html>
