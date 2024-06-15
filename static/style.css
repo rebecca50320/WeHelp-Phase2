@@ -236,7 +236,18 @@ a {
     justify-content: center;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap:30px;
+    /* overflow-y: scroll; */
+    position:relative;
 }
+
+.sentinel{
+    /* background-color: red; */
+    height:10px;
+    width: 100%;
+    position: absolute;
+    bottom:0;
+}
+
 .l-bigbox{
     width:100%;
     height:242px;
@@ -255,7 +266,11 @@ a {
     z-index: 1;
     overflow: hidden;
 }
-
+.l-image img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
 .l-name{
     width:100%;
     height:40px;
@@ -301,6 +316,7 @@ a {
     text-align: left;
     flex:1;
 }
+
 
 
 

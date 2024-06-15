@@ -45,7 +45,6 @@
       
   </div>
 
-
   <!-- Content: Main -->
   <div class="l-main">
     <div class="m-listbar">
@@ -121,92 +120,112 @@
       </div>
     </div>
     
-    <div id="att_container" class="m-attractions"></div>
-    <!-- <div id="bigbox" class="l-bigbox"></div> -->
-      <!-- <div id="bigbox" class="l-bigbox">
-        <div class="l-image">  
-          <div class="l-name">
-            <p>平安鐘</p>
-          </div>
-        </div>
-        <div class="l-detail">
-          <div class="l-info">
-            <p class="p-left">東門</p>
-          </div>
-          <div class="l-info">
-            <p class="p-right">藝文場所</p>
-          </div>
-        </div>
-      </div> -->
+    <div class="m-attractions" id="att_container">
+      <div id="sentinel" class="sentinel"></div> 
+    </div>
     
+
     <script>
-      window.onload = get_ArractData();
-      function get_ArractData(){
-        fetch('/api/attractions').then(function(response){
-          return response.json();
-        }).then(function(data){
-          const att_container = document.querySelector("#att_container");
-          // console.log(data["data"][0]["images"][0]);
+      document.addEventListener("DOMContentLoaded", function() {
+        const att_container = document.getElementById('att_container');
+        const sentinel = document.getElementById('sentinel');
+        let nextPage = null;
+
+        const observer = new IntersectionObserver(handleIntersection, {
+          root: null,
+          threshold: 0.1,
+        });
+        // observer.observe(sentinel);
+
+        let attract_api = '/api/attractions';
+        get_AtrractData(attract_api);
+  
+        function handleIntersection(entries, observer) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              console.log("Sentinel is intersecting, loading more data...");
+              observer.unobserve(sentinel); // 防止多次觸發
+              if (nextPage !== null){
+                fetchMoreData(nextPage);
+              }
+              
+            }
+          });
+        }
+        
+        function get_AtrractData(url){
+          fetch(url).then(response => response.json())
+            .then(data => {
+              appendDataToContainer(data);
+              nextPage = data["nextPage"];
+              // console.log(nextPage);
+              //observer.observe(sentinel); 
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function appendDataToContainer(data){
           box_cnt = data["data"].length
-          for (let i=0; i< box_cnt; i++){
-            let item = data["data"][i];
-            // create big box
-            var bigbox = document.createElement("div");
-            bigbox.classList.add('l-bigbox');
-            //create image box
-            var imagebox = document.createElement("div");
-            imagebox.classList.add('l-image');
-            var imgElement = document.createElement("img");
-            imgElement.src = item["images"][0];
-            imagebox.appendChild(imgElement);
-            // create attraction name box
-            var namebox = document.createElement("div");
-            namebox.classList.add('l-name');
-            var nameElement = document.createElement("p");
-            nameElement.textContent = item["name"];
-            namebox.appendChild(nameElement);
-            imagebox.append(namebox);
-            //create detail box
-            var detailbox = document.createElement("div");
-            detailbox.classList.add('l-detail');
-            //create info box-mrt
-            var infobox_1 = document.createElement("div");
-            infobox_1.classList.add('l-info');
-            var info_mrt = document.createElement("p");
-            info_mrt.textContent = item["mrt"]
-            info_mrt.classList.add('p-left');
-            infobox_1.appendChild(info_mrt);
-            //create info box-cat
-            var infobox_2 = document.createElement("div");
-            infobox_2.classList.add('l-info');
-            var info_cat = document.createElement("p");
-            info_cat.classList.add('p-right');
-            info_cat.textContent = item["category"]
-            infobox_2.appendChild(info_cat);
-            
-            detailbox.appendChild(infobox_1);
-            detailbox.appendChild(infobox_2);
-            
-            bigbox.appendChild(imagebox);
-            bigbox.appendChild(detailbox);
-            att_container.appendChild(bigbox);
-
-          }
-
-
-
-
-        })
-      }
-                
-            
-    </script>
-
+            for (let i=0; i< box_cnt; i++){
+              let item = data["data"][i];
+              // create big box
+              const bigbox = document.createElement("div");
+              bigbox.classList.add('l-bigbox');
+              //create image box
+              const imagebox = document.createElement("div");
+              imagebox.classList.add('l-image');
+              const imgElement = document.createElement("img");
+              imgElement.src = item["images"][0];
+              imagebox.appendChild(imgElement);
+              // create attraction name box
+              const namebox = document.createElement("div");
+              namebox.classList.add('l-name');
+              const nameElement = document.createElement("p");
+              nameElement.textContent = item["name"];
+              namebox.appendChild(nameElement);
+              imagebox.append(namebox);
+              //create detail box
+              const detailbox = document.createElement("div");
+              detailbox.classList.add('l-detail');
+              //create info box-mrt
+              const infobox_1 = document.createElement("div");
+              infobox_1.classList.add('l-info');
+              const info_mrt = document.createElement("p");
+              info_mrt.textContent = item["mrt"]
+              info_mrt.classList.add('p-left');
+              infobox_1.appendChild(info_mrt);
+              //create info box-cat
+              const infobox_2 = document.createElement("div");
+              infobox_2.classList.add('l-info');
+              const info_cat = document.createElement("p");
+              info_cat.classList.add('p-right');
+              info_cat.textContent = item["category"]
+              infobox_2.appendChild(info_cat);
+              
+              detailbox.appendChild(infobox_1);
+              detailbox.appendChild(infobox_2);
+              
+              bigbox.appendChild(imagebox);
+              bigbox.appendChild(detailbox);
+              // att_container.appendChild(bigbox);
+              att_container.insertBefore(bigbox, sentinel);
+              observer.observe(sentinel); 
+            }
+        }
+        function fetchMoreData(page){
+          let attract_api = '/api/attractions?page='+ page;
+          //console.log(attract_api);
+          get_AtrractData(attract_api);
+        }
+      
+    });
+      
+    </script>  
   </div>
 
 
   <!-- Footer -->
-  <div class="l-footer">
+  <div class="l-footer" id="footer">
     <div class="l-textbox">
       <p>COPYRIGHT © 2024 台北一日遊</p>
     </div>
