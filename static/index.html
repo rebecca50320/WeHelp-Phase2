@@ -78,30 +78,29 @@
       const att_container = document.getElementById('att_container');
       const sentinel = document.getElementById('sentinel');
       let nextPage = null;
+      let keyword = '';
 
       fetch('/api/mrts')
         .then(response => response.json())
         .then(data => {
-          //console.log(data["data"]);
           renderMRTStations(data["data"]);
         });
-        
-      let attract_api = '/api/attractions';
-      get_AtrractData(attract_api);
 
       const observer = new IntersectionObserver(handleIntersection, {
         root: null,
         threshold: 0.1,
       });
 
+      get_AtrractData(nextPage,keyword);
+
       function handleIntersection(entries, observer) {
-        entries.forEach(entry => {
+        entries.forEach(entry => {  
           if (entry.isIntersecting) {
             //console.log("Sentinel is intersecting, loading more data...");
             observer.unobserve(sentinel); // 防止多次觸發
+            
             if (nextPage !== null){
-              console.log("shit");
-              fetchMoreData(nextPage);
+              get_AtrractData(nextPage,keyword);
             }
             
           }
@@ -109,36 +108,36 @@
       }
       
       window.search_keyword = function(){
-        const inputValue = searchInput.value.trim();
+        keyword = searchInput.value.trim();
         clearAttractions();
-        fetchMoreData(null,inputValue);
+        get_AtrractData(null,keyword);
       }
 
-      function fetchMoreData(page = null, keyword = ''){
+
+      function get_AtrractData(page = null, keyword = ''){
         let attract_api = '/api/attractions';
         let params = [];
-        if (page !== null){
+        if (page !== null && keyword === ''){
           params.push(`page=${page}`);
+          attract_api += '?'+ params;
         }
-        if (keyword !== ''){
+        else if (page === null && keyword !== ''){
           params.push(`keyword=${encodeURIComponent(keyword)}`);
+          attract_api += '?'+ params;
         }
-        if (params.length > 0) {
+        else if (page !== null && keyword !== '') {
+          params.push(`page=${page}`);
+          params.push(`keyword=${encodeURIComponent(keyword)}`);
           attract_api += '?' + params.join('&');
         }
-        console.log(attract_api);
-        get_AtrractData(attract_api);
-      }
-
-
-      function get_AtrractData(url){
-        fetch(url).then(response => response.json())
+        fetch(attract_api).then(response => response.json())
           .then(data => {
             appendDataToContainer(data);
             nextPage = data["nextPage"];
           })
           .catch(error => console.error('Error fetching data:', error));
       }
+      
 
       function appendDataToContainer(data){
         box_cnt = data["data"].length
@@ -183,7 +182,7 @@
             
             bigbox.appendChild(imagebox);
             bigbox.appendChild(detailbox);
-            // att_container.appendChild(bigbox);
+            
             att_container.insertBefore(bigbox, sentinel);
             observer.observe(sentinel); 
           }
@@ -198,8 +197,9 @@
           stationElement.textContent = mrt;
           stationElement.onclick = () => {
             searchInput.value = mrt;
+            keyword = mrt
             clearAttractions();
-            get_AtrractData(`/api/attractions?keyword=${mrt}`);
+            get_AtrractData(null,keyword);
           };
           stationList.appendChild(stationElement);
         }
