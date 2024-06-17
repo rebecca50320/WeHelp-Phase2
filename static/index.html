@@ -37,7 +37,7 @@
               <input type="text" placeholder="輸入景點名稱查詢" id="search_input">
             </div>
             <div class="l-searchfield">
-              <button onclick="keyword()"><img src="static/img/search.png"></button>
+              <button onclick="search_keyword()"><img src="static/img/search.png"></button>
             </div>  
           </div>
           </div>
@@ -97,9 +97,10 @@
       function handleIntersection(entries, observer) {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            console.log("Sentinel is intersecting, loading more data...");
+            //console.log("Sentinel is intersecting, loading more data...");
             observer.unobserve(sentinel); // 防止多次觸發
             if (nextPage !== null){
+              console.log("shit");
               fetchMoreData(nextPage);
             }
             
@@ -107,14 +108,34 @@
         });
       }
       
-      
+      window.search_keyword = function(){
+        const inputValue = searchInput.value.trim();
+        clearAttractions();
+        fetchMoreData(null,inputValue);
+      }
+
+      function fetchMoreData(page = null, keyword = ''){
+        let attract_api = '/api/attractions';
+        let params = [];
+        if (page !== null){
+          params.push(`page=${page}`);
+        }
+        if (keyword !== ''){
+          params.push(`keyword=${encodeURIComponent(keyword)}`);
+        }
+        if (params.length > 0) {
+          attract_api += '?' + params.join('&');
+        }
+        console.log(attract_api);
+        get_AtrractData(attract_api);
+      }
+
+
       function get_AtrractData(url){
         fetch(url).then(response => response.json())
           .then(data => {
             appendDataToContainer(data);
             nextPage = data["nextPage"];
-            // console.log(nextPage);
-            //observer.observe(sentinel); 
           })
           .catch(error => console.error('Error fetching data:', error));
       }
@@ -167,12 +188,7 @@
             observer.observe(sentinel); 
           }
       }
-      function fetchMoreData(page){
-        let attract_api = '/api/attractions?page='+ page;
-        //console.log(attract_api);
-        get_AtrractData(attract_api);
-      }
-
+      
       function renderMRTStations(data) {
         let mrt_cnt = data.length
         for (let i=0; i<mrt_cnt; i++){

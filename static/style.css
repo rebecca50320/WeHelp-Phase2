@@ -49,7 +49,7 @@ table {
 }
 button{
 	background-color: transparent;
-	border: 0px;
+    border: none;
 }
 input{   
     border: none;
@@ -117,7 +117,7 @@ a {
     justify-content: center;
 }
 .l-slogan{
-    width:1200px;
+    width:100%;
     height:169px;
     /* background-color: aliceblue; */
     display: flex;
@@ -179,6 +179,7 @@ a {
     background-color:  #448899;
     border-radius: 0 5px 5px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 .l-searchfield img{
     width:30px;
@@ -209,7 +210,7 @@ a {
     white-space: nowrap;
     gap:20px;
 }
-.l-listcontainer .l-mrt{
+.l-mrt{
     /* width: 62px; */
     height:24px;
     padding-top: 10px;
@@ -218,6 +219,10 @@ a {
     font-weight: 500;
     color:#666666;
     text-align: center;
+}
+.l-mrt:hover{
+    color:#000000;
+    cursor: pointer;
 }
 .l-iconcontainer{
     height:50px;
