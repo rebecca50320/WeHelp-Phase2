@@ -118,7 +118,7 @@ a {
 }
 .l-slogan{
     width:100%;
-    max-width: 1180px;
+    max-width: 1200px;
     height:169px;
     /* background-color: aliceblue; */
     display: flex;
@@ -145,13 +145,14 @@ a {
 
 .l-searchbox{
     width: 100%;
-    max-width:1180px;
+    max-width:1200px;
     min-width: 360px;
     height:46px;
     margin-top: 45px;
 }
 .m-searchbar{
-    width:460px;
+    max-width:460px;
+    min-width: 285px;
     height:100%;
     display:flex;
 }
@@ -212,6 +213,11 @@ a {
     overflow-x: auto;
     white-space: nowrap;
     gap:20px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.l-listcontainer::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
 }
 
 .l-mrt{
@@ -242,11 +248,12 @@ a {
 }
 
 .m-attractions{
-    width:1200px;
+    max-width:1200px;
+    width: 100%;
     height:fit-content;
     /* background-color: lightblue; */
     margin: auto;
-    padding:15px;
+    /* padding:15px; */
     display:grid;
     justify-content: center;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -358,23 +365,23 @@ a {
 
 
 /* RWD setting */
-@media(max-width:360px){
+@media(max-width:600px){
     .l-navigation{
         width:360px;
     }
     
     .l-slogan{
-        width:340px;;
+        width:360px;;
     }
     .l-slogancontext{
-        width:320px;
+        width:360px;
     }
     
     .l-searchbox{
         width:320px;
     }
     .m-searchbar{
-        width:285px;
+        width:360px;
         height:100%;
         display:flex;
     }
@@ -389,6 +396,9 @@ a {
         /* padding:15px; */
         grid-template-columns: 1fr ;
         /* grid-gap:30px; */
+        margin:auto;
     
     }
 }
+
+
