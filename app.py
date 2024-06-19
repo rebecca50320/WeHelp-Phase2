@@ -1,9 +1,11 @@
 from fastapi import *
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from typing import Optional
 import mysql.connector
 
 app= FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 ## DB connection
 mydb = mysql.connector.connect(

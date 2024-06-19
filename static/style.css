@@ -1,0 +1,402 @@
+/* CSS reset
+    http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+button{
+	background-color: transparent;
+    border: none;
+}
+input{   
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+/* Code Starts HERE Code Starts HERE Code Starts HERE */
+/* Code Starts HERE Code Starts HERE Code Starts HERE */
+/* Code Starts HERE Code Starts HERE Code Starts HERE */
+
+
+/* Header: Navigation */
+.l-container{
+    width:100%;
+    height:54px;
+    display: flex;
+    position:sticky;
+    top:0;
+    z-index: 1000;
+    background-color: white;
+}
+.l-navigation{
+    width: 1200px;
+    height: 100%;
+    margin:auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.l-navigation h2{
+    font-size: 30px;
+    font-weight: 700;
+    color: #448899;
+}
+.l-navbar{
+    /* background-color: white; */
+    width: 175px;
+    height:34px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.l-navbar a{
+    font-size: 16px;
+    color: #666666;
+    /* padding:10px; */
+}
+
+/* Key Visual: Hero Section */
+.l-herosection{
+    width: 100%;
+    height:320px;
+    background-image: url(img/101.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.l-slogan{
+    width:100%;
+    max-width: 1200px;
+    height:169px;
+    /* background-color: aliceblue; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.l-slogancontext{
+    width:100%;
+    height:78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.l-slogancontext h3{
+    font-size: 28px;
+    font-weight: 700;
+    color:#F8F8F8;
+}
+.l-slogancontext p{
+    font-size: 16px;
+    font-weight: 700;
+    color:#F8F8F8;
+}
+
+.l-searchbox{
+    width: 100%;
+    max-width:1200px;
+    min-width: 360px;
+    height:46px;
+    margin-top: 45px;
+}
+.m-searchbar{
+    max-width:460px;
+    min-width: 285px;
+    height:100%;
+    display:flex;
+}
+.l-inputfield{
+    width: 400px;
+    height: 100%;
+}
+.l-inputfield input{
+    width:100%;
+    height:100%;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+}
+.l-inputfield ::placeholder{
+    font-size: 16px;
+    font-weight: 700;
+    color:#757575;
+    padding-left:5px;
+}
+.l-searchfield{
+    width:60px;
+    height:100%; 
+}
+.l-searchfield button{
+    width:100%;
+    height:100%;
+    background-color:  #448899;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.l-searchfield img{
+    width:30px;
+    height:30px;
+}
+
+/* Content: Main */
+.l-main{
+    padding: 40px 0 40px 0;
+    width: 100%;
+} 
+.m-listbar{
+    max-width: 1220px;
+    width:100%;
+    height:70px;
+    margin: auto;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    overflow: hidden;
+    
+}
+.l-listcontainer{
+    width:100%;
+    height:50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap:20px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.l-listcontainer::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+.l-mrt{
+    /* width: 62px; */
+    height:24px;
+    padding-top: 10px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 500;
+    color:#666666;
+    text-align: center;
+}
+.l-mrt:hover{
+    color:#000000;
+    cursor: pointer;
+}
+.l-iconcontainer{
+    height:50px;
+}
+.l-iconcontainer button{
+    cursor: pointer;
+}
+.l-iconcontainer button:hover{
+    padding: 9px, 0px, 9px, 15px;
+    cursor: pointer;
+}
+
+.m-attractions{
+    max-width:1200px;
+    width: 100%;
+    height:fit-content;
+    margin: auto;
+    display:grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap:30px;
+    /* overflow-y: scroll; */
+    position:relative;
+}
+
+.sentinel{
+    /* background-color: red; */
+    height:10px;
+    width: 100%;
+    position: absolute;
+    bottom:0;
+}
+
+.l-bigbox{
+    width:100%;
+    height:242px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.l-image{
+    width:100%;
+    height:197px;
+    position: relative;
+    background-size: contain;
+    background-position: center;
+    z-index: 1;
+    overflow: hidden;
+}
+.l-image img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+.l-name{
+    width:100%;
+    height:40px;
+    background-color: black;
+    background-color: rgba(0, 0, 0, 0.6);
+    position:absolute;
+    bottom:0px;
+    z-index: 2;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+.l-name p{
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin: 10px;
+    position: relative; 
+    z-index: 3;
+}
+.l-detail{
+    width:100%;
+    height:45px;
+    display:flex;
+    justify-content: space-between;
+    align-content: center;
+    background-color: #FFFFFF;
+}
+.l-info{
+    width:50%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.l-info p{
+    font-size: 16px;
+    font-weight: 500;
+    color:#757575;
+}
+.l-info .p-right{
+    text-align: right;
+    flex:1;
+}
+.l-info .p-left{
+    text-align: left;
+    flex:1;
+}
+
+
+
+
+
+
+/* Footer */
+.l-footer{
+    width: 100%;
+    height:104px;
+    background-color: #757575;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.l-footer p{
+    font-size: 16px;
+    font-weight: 700;
+    color:#F8F8F8;
+}
+
+
+/* RWD setting */
+@media(max-width:600px){
+    .l-navigation{
+        width:360px;
+    }
+    
+    .l-slogan{
+        width:360px;;
+    }
+    .l-slogancontext{
+        width:360px;
+    }
+    
+    .l-searchbox{
+        width:320px;
+    }
+    .m-searchbar{
+        width:360px;
+        height:100%;
+        display:flex;
+    }
+    .l-inputfield{
+        width: 225px;
+        height: 100%;
+    }
+
+    .m-attractions{
+        width:352px;
+        height:fit-content;
+        /* padding:15px; */
+        grid-template-columns: 1fr ;
+        /* grid-gap:30px; */
+        margin:auto;
+    
+    }
+}
+
+

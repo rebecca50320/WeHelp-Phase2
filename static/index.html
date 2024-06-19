@@ -4,8 +4,229 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  <!-- Header: Navigation -->
+  <div class="l-container">
+    <div class="l-navigation">
+      <div class="l-title">
+        <h2>台北一日遊</h2>
+      </div>
+      <div class="l-navbar">
+        <div class="l-bookbutton">
+          <a href="">預定行程</a>
+        </div>
+        <div class="l-loginbutton">
+          <a href="">登入/註冊</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Visual: Hero Section -->
+  <div class="l-herosection">
+      <div class="l-slogan">
+        <div class="l-slogancontext">
+          <h3>輕鬆享受台北一日悠閒</h3>
+          <p>探索每個角落，體驗城市的深度旅遊行程</p>
+        </div>
+        <div class="l-searchbox">
+          <div class="m-searchbar">
+            <div class="l-inputfield">
+              <input type="text" placeholder="輸入景點名稱查詢" id="search_input">
+            </div>
+            <div class="l-searchfield">
+              <button onclick="search_keyword()"><img src="static/img/search.png"></button>
+            </div>  
+          </div>
+          </div>
+        </div>
+      
+  </div>
+
+  <!-- Content: Main -->
+  <div class="l-main">
+    <div class="m-listbar" id="mrt_stations">
+      <div class="l-iconcontainer">
+        <button onclick="scrollLeftCustom()"><img src="/static/img/default_left.png"></button>
+      </div>
+      <div class="l-listcontainer" id="mrt_list"></div>
+      <div class="l-iconcontainer">
+        <button onclick="scrollRight()"><img src="/static/img/default_right.png"></button>
+      </div>
+    </div>
+    
+    <div class="m-attractions" id="att_container">
+      <div id="sentinel" class="sentinel"></div> 
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <div class="l-footer" id="footer">
+    <div class="l-textbox">
+      <p>COPYRIGHT © 2024 台北一日遊</p>
+    </div>
+  </div>
+
+  <!-- Javascript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const searchInput = document.getElementById('search_input');
+      const stationList = document.getElementById('mrt_list');
+      const att_container = document.getElementById('att_container');
+      const sentinel = document.getElementById('sentinel');
+      let nextPage = null;
+      let keyword = '';
+
+      fetch('/api/mrts')
+        .then(response => response.json())
+        .then(data => {
+          renderMRTStations(data["data"]);
+        });
+
+      const observer = new IntersectionObserver(handleIntersection, {
+        root: null,
+        threshold: 0.1,
+      });
+
+      get_AtrractData(nextPage,keyword);
+
+      function handleIntersection(entries, observer) {
+        entries.forEach(entry => {  
+          if (entry.isIntersecting) {
+            //console.log("Sentinel is intersecting, loading more data...");
+            observer.unobserve(sentinel); // 防止多次觸發
+            
+            if (nextPage !== null){
+              get_AtrractData(nextPage,keyword);
+            }
+            
+          }
+        });
+      }
+      
+      window.search_keyword = function(){
+        keyword = searchInput.value.trim();
+        clearAttractions();
+        get_AtrractData(null,keyword);
+      }
+
+
+      function get_AtrractData(page = null, keyword = ''){
+        let attract_api = '/api/attractions';
+        let params = [];
+        if (page !== null && keyword === ''){
+          params.push(`page=${page}`);
+          attract_api += '?'+ params;
+        }
+        else if (page === null && keyword !== ''){
+          params.push(`keyword=${encodeURIComponent(keyword)}`);
+          attract_api += '?'+ params;
+        }
+        else if (page !== null && keyword !== '') {
+          params.push(`page=${page}`);
+          params.push(`keyword=${encodeURIComponent(keyword)}`);
+          attract_api += '?' + params.join('&');
+        }
+        fetch(attract_api).then(response => response.json())
+          .then(data => {
+            appendDataToContainer(data);
+            nextPage = data["nextPage"];
+          })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+      
+
+      function appendDataToContainer(data){
+        box_cnt = data["data"].length
+          for (let i=0; i< box_cnt; i++){
+            let item = data["data"][i];
+            // create big box
+            const bigbox = document.createElement("div");
+            bigbox.classList.add('l-bigbox');
+            //create image box
+            const imagebox = document.createElement("div");
+            imagebox.classList.add('l-image');
+            const imgElement = document.createElement("img");
+            imgElement.src = item["images"][0];
+            imagebox.appendChild(imgElement);
+            // create attraction name box
+            const namebox = document.createElement("div");
+            namebox.classList.add('l-name');
+            const nameElement = document.createElement("p");
+            nameElement.textContent = item["name"];
+            namebox.appendChild(nameElement);
+            imagebox.append(namebox);
+            //create detail box
+            const detailbox = document.createElement("div");
+            detailbox.classList.add('l-detail');
+            //create info box-mrt
+            const infobox_1 = document.createElement("div");
+            infobox_1.classList.add('l-info');
+            const info_mrt = document.createElement("p");
+            info_mrt.textContent = item["mrt"]
+            info_mrt.classList.add('p-left');
+            infobox_1.appendChild(info_mrt);
+            //create info box-cat
+            const infobox_2 = document.createElement("div");
+            infobox_2.classList.add('l-info');
+            const info_cat = document.createElement("p");
+            info_cat.classList.add('p-right');
+            info_cat.textContent = item["category"]
+            infobox_2.appendChild(info_cat);
+            
+            detailbox.appendChild(infobox_1);
+            detailbox.appendChild(infobox_2);
+            
+            bigbox.appendChild(imagebox);
+            bigbox.appendChild(detailbox);
+            
+            att_container.insertBefore(bigbox, sentinel);
+            observer.observe(sentinel); 
+          }
+      }
+      
+      function renderMRTStations(data) {
+        let mrt_cnt = data.length
+        for (let i=0; i<mrt_cnt; i++){
+          let mrt = data[i];
+          const stationElement = document.createElement('div');
+          stationElement.classList.add('l-mrt');
+          stationElement.textContent = mrt;
+          stationElement.onclick = () => {
+            searchInput.value = mrt;
+            keyword = mrt
+            clearAttractions();
+            get_AtrractData(null,keyword);
+          };
+          stationList.appendChild(stationElement);
+        }
+      }
+
+      function clearAttractions() {
+        while (att_container.firstChild !== sentinel) {
+          att_container.removeChild(att_container.firstChild);
+        }
+      }
+
+
+
+      window.scrollRight = function() {
+        stationList.scrollBy({ left: 200, behavior: 'smooth' });
+      };
+
+      window.scrollLeftCustom = function() {
+        stationList.scrollBy({ left: -200, behavior: 'smooth' });
+      };
+
+      
+    
+  });
+
+    
+  </script>  
   
 </body>
 </html>
