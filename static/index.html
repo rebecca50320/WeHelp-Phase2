@@ -143,9 +143,16 @@
         box_cnt = data["data"].length
           for (let i=0; i< box_cnt; i++){
             let item = data["data"][i];
+            //memorize attraction_id
+            const id = document.createElement("div");
+            id.textContent = item["id"];
+            
             // create big box
             const bigbox = document.createElement("div");
             bigbox.classList.add('l-bigbox');
+            bigbox.onclick = function() {
+              redirectToPage(id.textContent);
+            };
             //create image box
             const imagebox = document.createElement("div");
             imagebox.classList.add('l-image');
@@ -221,7 +228,10 @@
         stationList.scrollBy({ left: -200, behavior: 'smooth' });
       };
 
-      
+      function redirectToPage(id) {
+        url = "/attraction/" + id
+        window.location.assign(url);
+      }
     
   });
 

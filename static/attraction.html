@@ -49,10 +49,13 @@
         </div>
         <div class="m-timepicker">
           <h3>選擇時間：</h3>
-          <input type="radio"><p>上半天</p> 
-          <input type="radio"><p>下半天</p>
+          <label class="radio-label">
+            <input type="radio" name="time-picker" value="am" checked><p>上半天</p> 
+            <input type="radio" name="time-picker" value="pm" ><p>下半天</p>
+          </label>
+          
         </div>
-        <h3>導覽費用： <span>新台幣 2000 元</span></h3>
+        <h3>導覽費用： <span id="fee">新台幣 2000 元</span></h3>
         <div class="att-btn-booking">
           <button>開始預約行程</button>
         </div>
@@ -80,9 +83,6 @@
     </div>
   </div>
 
-
-
-
   <!-- Footer -->
   <div class="l-footer" id="footer">
     <div class="l-textbox">
@@ -94,20 +94,16 @@
   <!-- Javascript -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-
-      attractionId = 10;
-      api_url = '/api/attraction/' + attractionId
+      pathname = window.location.pathname;
+      api_url = '/api' + pathname;
       fetch(api_url)
         .then(response => response.json())
         .then(data => {
-          // renderMRTStations(data["data"]);
           //console.log(data);
           appendDataToContainer(data["data"]);
         });
-      });
 
       function appendDataToContainer(data){
-        console.log(data["category"])
         const att_title = document.getElementById('att_title');
         att_title.querySelector('h1').textContent = data["name"];
         //const att_tags = document.getElementById('att_tags');
@@ -118,6 +114,25 @@
         document.getElementById('att_transport').textContent = data["transport"];
       }
 
+      const radios = document.querySelectorAll('input[name="time-picker"]');
+      const feeSpan = document.getElementById('fee');
+      function changeFee(){
+        const selectedRadio = document.querySelector('input[name="time-picker"]:checked');
+          if (selectedRadio.value === 'am') {
+              feeSpan.textContent = '新台幣 2000 元';
+          } else if (selectedRadio.value === 'pm') {
+              feeSpan.textContent = '新台幣 2500 元';
+          }      
+      }
+      radios.forEach(radio => {
+        radio.addEventListener('change', changeFee);
+      });
+
+
+    });
+
+      
+    
   </script>
   
 </body>
