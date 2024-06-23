@@ -498,7 +498,7 @@ hr{
     width:100%;
 }
 .att-infors{
-    height:362px;
+    min-height:362px;
     width:100%;
     max-width: 1180px;
     margin: auto;
@@ -522,6 +522,7 @@ hr{
     font-size: 16px;
     font-weight:400;
     color: #666666;
+    line-height: 1.5;
 }
 
 
