@@ -417,7 +417,6 @@ a {
 .att-slide-container{
     max-width: 540px;
     width: 45%;
-    background-color: #448899;
     overflow: hidden;
     position:relative;
     z-index: 1;
@@ -433,10 +432,14 @@ a {
 .att-slide{
     overflow: hidden;
     box-sizing: border-box;
-    display: none;
-    
+    display: none;    
 }
-.att-slide img{
+.att-slide.active{
+    overflow: hidden;
+    box-sizing: border-box;
+    display: block;    
+}
+.att-slide-img{
     display: block;
     width:100%;
     height: 100%;

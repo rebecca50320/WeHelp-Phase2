@@ -29,24 +29,14 @@
   <!-- Picture & Profile: Section -->
   <div class="att-section">
     <div class="att-slide-container">
-      <div class="att-slideshow">
-        <div class="att-slide">
-          <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D226/E920/F665/1f26af86-e907-44c9-b4d7-5c498dacfc6c.jpg">
-        </div>
-        <div class="att-slide">
-          <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C1/D9/E832/F14/44bcb0c8-d34a-45f5-9e03-6df61bd9cff2.jpg">
-        </div>
-      </div>
+      <div class="att-slideshow" id="att_slideshow"></div>
       <div class="att-prev">
         <button onclick="changeSlide(-1)"><img src="/static/img/att_leftArrow.png"></button>
       </div>
       <div class="att-next">
         <button onclick="changeSlide(1)"><img src="/static/img/att_rightArrow.png"></button>
       </div>
-      <div class="att-dot-container">
-        <span class="att-dot active" onclick="currentSlide(1)"></span>
-        <span class="att-dot" onclick="currentSlide(2)"></span>
-      </div>
+      <div class="att-dot-container" id="att_dot_container"></div>
     
     </div>
 
@@ -112,27 +102,57 @@
 
   <!-- Javascript -->
   <script>
+    let slideIndex = 0;
     document.addEventListener("DOMContentLoaded", function() {
       pathname = window.location.pathname;
       api_url = '/api' + pathname;
       fetch(api_url)
         .then(response => response.json())
         .then(data => {
-          //console.log(data);
           appendDataToContainer(data["data"]);
+          showSlides(slideIndex);
         });
+
+      
+      
+      
 
       function appendDataToContainer(data){
         const att_title = document.getElementById('att_title');
         att_title.querySelector('h1').textContent = data["name"];
-        //const att_tags = document.getElementById('att_tags');
         document.getElementById('att_cat').textContent = data["category"];
         document.getElementById('att_mrt').textContent = "at " + data["mrt"];
         document.getElementById('att_descrip').textContent = data["description"];
         document.getElementById('att_address').textContent = data["address"];
         document.getElementById('att_transport').textContent = data["transport"];
+        //Append Img
+        const slideshow = document.getElementById('att_slideshow');
+        const dot_con = document.getElementById('att_dot_container');
+        img_cnt = data["images"].length;
+        for (let i=0; i<img_cnt;i++){
+          const slide = document.createElement("div");
+          // if (i==0){
+          //   slide.classList.add('att-slide.active');
+          // }
+          // else{
+          //   slide.classList.add('att-slide');
+          // }
+          slide.classList.add('att-slide');
+          const img = document.createElement("img");
+          img.src = data["images"][i];
+          img.classList.add('att-slide-img');
+          slide.appendChild(img);
+          slideshow.appendChild(slide);
+          //create dots
+          const dot = document.createElement("span");
+          dot.classList.add('att-dot');
+          dot.onclick = function(){
+            currentSlide(i+1);
+          }
+          dot_con.appendChild(dot);
+        }
       }
-
+      // Time Picker
       const radios = document.querySelectorAll('input[name="time-picker"]');
       const feeSpan = document.getElementById('fee');
       function changeFee(){
@@ -147,38 +167,36 @@
         radio.addEventListener('change', changeFee);
       });
 
-      //function appendImg(data){}
 
-  
 
     });
 
-    let slideIndex = 0;
-      showSlides(slideIndex);
+    // let slideIndex = 0;
+    // showSlides(slideIndex);
+
     function changeSlide(n) {
-          showSlides(slideIndex += n);
+        showSlides(slideIndex += n);
       }
 
     function currentSlide(n) {
         showSlides(slideIndex = n - 1);
     }
     function showSlides(n) {
-          let slides = document.querySelectorAll(".att-slide");
-          let dots = document.querySelectorAll(".att-dot");
-          if (n >= slides.length) {
-              slideIndex = 0;
-          }
-          if (n < 0) {
-              slideIndex = slides.length - 1;
-          }
-
-          slides.forEach((slide, index) => {
-              slide.style.display = "none";
-              dots[index].className = dots[index].className.replace(" active", "");
-          });
-
-          slides[slideIndex].style.display = "block";
-          dots[slideIndex].className += " active";
+        let slides = document.querySelectorAll(".att-slide");
+        //console.log(slides);
+        let dots = document.querySelectorAll(".att-dot");
+        if (n >= slides.length) {
+            slideIndex = 0;
+        }
+        if (n < 0) {
+            slideIndex = slides.length - 1;
+        }
+        slides.forEach((slide, index) => {
+            slide.style.display = "none";
+            dots[index].className = dots[index].className.replace(" active", "");
+        });
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].className += " active";
       };
 
       
