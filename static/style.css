@@ -430,6 +430,7 @@ a {
     position: relative;
 }
 .att-slide{
+    width: 100%;
     overflow: hidden;
     box-sizing: border-box;
     display: none;    
