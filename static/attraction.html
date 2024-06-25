@@ -28,9 +28,28 @@
 
   <!-- Picture & Profile: Section -->
   <div class="att-section">
-    <div class="att-pic">
-      <p>img</p>
+    <div class="att-slide-container">
+      <div class="att-slideshow">
+        <div class="att-slide">
+          <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C0/D226/E920/F665/1f26af86-e907-44c9-b4d7-5c498dacfc6c.jpg">
+        </div>
+        <div class="att-slide">
+          <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/image/A0/B0/C1/D9/E832/F14/44bcb0c8-d34a-45f5-9e03-6df61bd9cff2.jpg">
+        </div>
+      </div>
+      <div class="att-prev">
+        <button onclick="changeSlide(-1)"><img src="/static/img/att_leftArrow.png"></button>
+      </div>
+      <div class="att-next">
+        <button onclick="changeSlide(1)"><img src="/static/img/att_rightArrow.png"></button>
+      </div>
+      <div class="att-dot-container">
+        <span class="att-dot active" onclick="currentSlide(1)"></span>
+        <span class="att-dot" onclick="currentSlide(2)"></span>
+      </div>
+    
     </div>
+
     <div class="att-profile">
       <div class="att-title" id="att_title">
         <h1>平安鐘</h1>
@@ -128,8 +147,39 @@
         radio.addEventListener('change', changeFee);
       });
 
+      //function appendImg(data){}
+
+  
 
     });
+
+    let slideIndex = 0;
+      showSlides(slideIndex);
+    function changeSlide(n) {
+          showSlides(slideIndex += n);
+      }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n - 1);
+    }
+    function showSlides(n) {
+          let slides = document.querySelectorAll(".att-slide");
+          let dots = document.querySelectorAll(".att-dot");
+          if (n >= slides.length) {
+              slideIndex = 0;
+          }
+          if (n < 0) {
+              slideIndex = slides.length - 1;
+          }
+
+          slides.forEach((slide, index) => {
+              slide.style.display = "none";
+              dots[index].className = dots[index].className.replace(" active", "");
+          });
+
+          slides[slideIndex].style.display = "block";
+          dots[slideIndex].className += " active";
+      };
 
       
     
