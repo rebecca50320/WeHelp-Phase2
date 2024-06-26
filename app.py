@@ -145,12 +145,4 @@ async def thankyou(request: Request):
 
 
 
-<<<<<<< HEAD
-
-
-	
-
-=======
->>>>>>> parent of 6199ab4 (Part4-1 0626 version)
-
 

@@ -556,15 +556,6 @@ a {
     flex-direction: row;
     align-items: center;
 }
-/* .m-timepicker label{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap:5px;
-}
-.radio-label input{
-    cursor: pointer;
-} */
 .radio-group {
     display: inline-block;
   }
@@ -674,8 +665,11 @@ hr{
 
 /* RWD setting */
 @media(max-width:600px){
-    .hr-wide{
+    hr{
         display: none;
+    }
+    .hr-wide{
+        display:block;
     }
     .att-section{
         flex-wrap: wrap;
