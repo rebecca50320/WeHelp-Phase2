@@ -205,37 +205,7 @@ async def thankyou(request: Request):
 
 
 
-email = 'b@gmail.com'
-password = '1231234'
 
-
-
-# sql_command = "select count(*) from member where email = %s "
-# cursor.execute(sql_command,(email,))
-# result = cursor.fetchone()
-
-# if result[0]>0: #有註冊
-# 	sql_command = "select id,name,password from member where email = %s"
-# 	cursor.execute(sql_command,(email,))
-# 	result = cursor.fetchone()
-# 	#print(result)
-# 	if result[2] == password:
-# 		id = result[0]
-# 		name = result[1]
-# 		payload = {
-# 		'id': id,
-# 		'name': name,
-# 		'email': email,
-# 		'password': password,
-# 		'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)  # Token expiration time
-# 		}
-# 		token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-# 		print(token)
-# 	else:
-# 		print("password incorrect")
-
-# else:
-# 	print("尚未註冊")
 
 	
 
