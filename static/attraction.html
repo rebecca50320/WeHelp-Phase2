@@ -58,10 +58,20 @@
         </div>
         <div class="m-timepicker">
           <h3>選擇時間：</h3>
-          <label class="radio-label">
-            <input type="radio" name="time-picker" value="am" checked><p>上半天</p> 
-            <input type="radio" name="time-picker" value="pm" ><p>下半天</p>
-          </label>
+          <div class="radio-group">
+            <input type="radio" class="radio-input" id="1" name="time-picker" value="am" checked>
+            <label for="1" class="radio-label">
+             <span class="radio-button"></span>
+             上半天
+            </label>
+          </div>
+          <div class="radio-group">
+            <input type="radio" class="radio-input" id="2" name="time-picker" value="pm">
+            <label for="2" class="radio-label">
+              <span class="radio-button"></span>
+              下半天
+            </label>
+          </div>
           
         </div>
         <h3>導覽費用： <span id="fee">新台幣 2000 元</span></h3>
@@ -74,7 +84,7 @@
 
   </div>
 
-  <hr>
+  <hr class="hr-wide">
 
   <!-- Information: Infors -->
   <div class="att-infors">

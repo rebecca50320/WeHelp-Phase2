@@ -61,6 +61,7 @@ a {
     color: inherit;
   }
 
+
 /* Code Starts HERE Code Starts HERE Code Starts HERE */
 /* Code Starts HERE Code Starts HERE Code Starts HERE */
 /* Code Starts HERE Code Starts HERE Code Starts HERE */
@@ -547,12 +548,15 @@ a {
     flex-direction: row;
     align-items: center;
 }
+.m-datepicker input{
+    padding:5px;
+}
 .m-timepicker{
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-.m-timepicker label{
+/* .m-timepicker label{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -560,8 +564,50 @@ a {
 }
 .radio-label input{
     cursor: pointer;
-}
-
+} */
+.radio-group {
+    display: inline-block;
+  }
+  .radio-input {
+    visibility: hidden; /* 把原本的input藏起來 */
+  }
+  .radio-label {
+    font-size: 16px;
+    font-weight:400;
+    color: #666666;
+    cursor: pointer;
+    position: relative;
+    padding-left: 30px;
+  }
+  .radio-button {
+    /* 自定義樣式的span */
+    height: 18px;
+    width: 18px;
+    border: 1px solid #FFFFFF;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .radio-button::after { /* 中間點點 */
+    content: "";
+    display: block;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #448899;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .radio-input:checked ~ .radio-label .radio-button::after {
+    /* 選中radio時 才顯示中間點點 */
+    opacity: 1;
+  }
 
 
 .att-btn-booking{
@@ -585,9 +631,12 @@ a {
 hr{
     color: #E8E8E8;
     border: 1px solid ;
-    max-width: 1200px;
     width:100%;
 }
+.hr-wide{
+    max-width: 1200px;
+}
+
 .att-infors{
     min-height:362px;
     width:100%;
@@ -599,7 +648,8 @@ hr{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding:10px;
+    padding-top:10px;
+    padding-bottom: 10px;
     gap:10px;
 }
 .att-infors h3{
@@ -615,14 +665,23 @@ hr{
     color: #666666;
     line-height: 1.5;
 }
+.att-descrip,.att-address, .att-transport {
+    max-width: 1160px;
+    width: 100%;
+    margin: auto;
+}
 
 
 /* RWD setting */
 @media(max-width:600px){
+    .hr-wide{
+        display: none;
+    }
     .att-section{
         flex-wrap: wrap;
         gap:10px;
         height: fit-content;
+        margin-top: 0;
     }
     .att-slide-container{
         max-width: 540px;
@@ -635,5 +694,10 @@ hr{
     }
     .att-infors{
         height:fit-content;
+    }
+    .att-descrip,.att-address, .att-transport {
+        max-width: 520px;
+        width: 100%;
+        margin: auto;
     }
 }
