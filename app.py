@@ -3,8 +3,6 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from typing import Optional
 import mysql.connector
-import jwt
-import datetime
 
 app= FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -17,7 +15,6 @@ mydb = mysql.connector.connect(
   database= "taipei_day_trip"
 )
 cursor = mydb.cursor()
-SECRET_KEY = 'hihihi'
 
 ## functions
 def image_url(url_str):
@@ -109,63 +106,6 @@ async def get_mrt(request:Request):
 	except Exception as e: #未定義的error顯示為500
 		raise HTTPException(status_code=500, detail="Internal Error")
 
-# 新會員註冊
-@app.post("/api/user")
-async def sign_up(name:str = Form(...),email:str = Form(...), password:str = Form(...)):
-	try:
-		sql_command = "select count(*) from member where email = %s"
-		cursor.execute(sql_command,(email,))
-		result = cursor.fetchone()
-		if result[0] >0:
-			raise HTTPException(status_code=400, detail="此信箱已註冊")
-		else:
-			sql_command = "insert into member(name,email,password) values(%s,%s,%s)"
-			val = (name,email,password)
-			cursor.execute(sql_command,val)
-			mydb.commit()
-			return {"ok":"true"}
-		
-	except HTTPException as e: #有定義的error
-		raise e
-	except Exception as e: #未定義的error顯示為500
-		raise HTTPException(status_code=500, detail="Internal Error")
-
-# 會員登入
-@app.put("/api/user/auth")
-async def sign_in(email:str = Form(...), password:str = Form(...)):
-	try:
-		sql_command = "select count(*) from member where email = %s "
-		cursor.execute(sql_command,(email,))
-		result = cursor.fetchone()
-		if result[0]>0: #有註冊
-			sql_command = "select id,name,password from member where email = %s"
-			cursor.execute(sql_command,(email,))
-			result = cursor.fetchone()
-			if result[2] == password:
-				id = result[0]
-				name = result[1]
-				payload = {
-				'id': id,
-				'name': name,
-				'email': email,
-				'password': password,
-				'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)  # Token expiration time
-				}
-				token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-				return {"token":token}
-			else:
-				raise HTTPException(status_code=400, detail="密碼不正確")
-
-		else:
-			raise HTTPException(status_code=400, detail="此信箱尚未註冊")
-	except HTTPException as e: #有定義的error
-		raise e
-	except Exception as e: #未定義的error顯示為500
-		raise HTTPException(status_code=500, detail="Internal Error")
-		
-		
-
-	
 
 @app.exception_handler(HTTPException)
 async def exception_handler(request: Request, exc: HTTPException):
@@ -205,9 +145,12 @@ async def thankyou(request: Request):
 
 
 
+<<<<<<< HEAD
 
 
 	
 
+=======
+>>>>>>> parent of 6199ab4 (Part4-1 0626 version)
 
 
