@@ -66,7 +66,9 @@ a {
 /* Code Starts HERE Code Starts HERE Code Starts HERE */
 /* Code Starts HERE Code Starts HERE Code Starts HERE */
 
-
+.body{
+    position: relative;
+}
 /* Header: Navigation */
 .l-container{
     width:100%;
@@ -100,10 +102,13 @@ a {
     justify-content: space-between;
     align-items: center;
 }
-.l-navbar a{
+.l-navbar p{
     font-size: 16px;
     color: #666666;
     /* padding:10px; */
+}
+.l-loginbutton{
+    cursor: pointer;
 }
 
 /* Key Visual: Hero Section */
@@ -190,6 +195,86 @@ a {
     width:30px;
     height:30px;
 }
+
+/* Sign-in & Sign-out */
+.m-signin{
+    width: 340px;
+    height:275px;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    position:fixed;
+    left: 50%;
+    transform: translate(-50%,0);
+    top:80px; 
+    z-index: 9999; 
+}
+.l-decorator{
+    height:10px;
+    width:100%;
+    background: linear-gradient(
+        to right, 
+        rgba(51, 119, 136, 1), 
+        rgba(102, 170, 187, 1)
+    );
+    border-radius:6px 6px 0 0 ;
+    position:absolute;
+    top:0;
+}
+.l-popup-container{
+    width:310px;
+    height:235px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap:10px;
+    position: relative;
+    margin: auto;
+    top: 20px;
+}
+.l-popup-container img{
+    height:16px;
+    width:16px;
+    position:absolute;
+    top:0;
+    right:0;
+    cursor: pointer;
+}
+.m-signin h1{
+    font-size: 24px;
+    font-weight: 700;
+    color:#666666;
+}
+.m-signin p{
+    font-size: 16px;
+    font-weight: 500;
+    color:#666666;
+}
+.l-popup-container input{
+    width:90%;
+    height:47px;
+    padding-left:10px;
+    border-radius: 5px;
+    border: solid #CCCCCC 1px;
+    cursor: pointer;
+}
+.l-popup-container ::placeholder{
+    font-size: 16px;
+    font-weight: 500;
+    color:#757575;
+    padding-left:5px;
+}
+.l-popup-container button{
+    width:290px;
+    height:47px;
+    background-color: #448899;
+    border-radius: 5px;
+    font-size: 19px;
+    font-weight: 400;
+    color:#FFFFFF;
+    cursor: pointer;
+}
+
 
 /* Content: Main */
 .l-main{
@@ -388,6 +473,10 @@ a {
     .l-inputfield{
         width: 225px;
         height: 100%;
+    }
+    .m-signin{
+        width:100%;
+        max-width: 340px;
     }
 
     .m-attractions{

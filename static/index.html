@@ -15,13 +15,39 @@
       </div>
       <div class="l-navbar">
         <div class="l-bookbutton">
-          <a href="">預定行程</a>
+          <p>預定行程</p>
         </div>
-        <div class="l-loginbutton">
-          <a href="">登入/註冊</a>
+        <div class="l-loginbutton" onclick="showPopup()">
+          <p>登入/註冊</p>
         </div>
       </div>
     </div>
+  </div>
+  <!-- Pop-Up: signin/signup -->
+  <div class="m-signin" id="loggin_popup" style="display: none">
+    <div class="l-decorator"></div>
+    <div class="l-popup-container">
+      <img src="/static/img/icon_close.png" onclick="closePopup()">
+      <h1>登入會員帳號</h1>
+      <input type="text" placeholder="輸入電子信箱" id="email_input">
+      <input type="text" placeholder="輸入密碼" id="password_input">
+      <button>登入帳戶</button>
+      <p>還沒有帳戶？<a href="#" onclick="showSignupForm()">點此註冊</a></p>
+    </div>
+
+  </div>
+  <div class="m-signin" id="signup_popup" style="display: none">
+    <div class="l-decorator"></div>
+    <div class="l-popup-container">
+      <img src="/static/img/icon_close.png" onclick="closePopup()">
+      <h1>註冊會員帳號</h1>
+      <input type="text" placeholder="輸入姓名" id="name_input">
+      <input type="text" placeholder="輸入電子信箱" id="email_input">
+      <input type="text" placeholder="輸入密碼" id="password_input">
+      <button>註冊新帳戶</button>
+      <p>已經有帳戶了？<a href="#" onclick="showLoginForm()">點此登入</a></p>
+    </div>
+
   </div>
 
   <!-- Key Visual: Hero Section -->
@@ -72,6 +98,26 @@
 
   <!-- Javascript -->
   <script>
+    // Signin/up Pop Up
+    const loggin_popup = document.getElementById('loggin_popup');
+    const signup_popup = document.getElementById('signup_popup');
+      
+    function showPopup(){
+      loggin_popup.style.display = 'block';
+    }
+    function closePopup(){
+      loggin_popup.style.display = 'none';
+      signup_popup.style.display = 'none';
+    }
+    function showSignupForm() {
+      loggin_popup.style.display = 'none';
+      signup_popup.style.display = 'block';
+    }
+    function showLoginForm() {
+      signup_popup.style.display = 'none';
+      loggin_popup.style.display = 'block';
+}
+
     document.addEventListener("DOMContentLoaded", function() {
       const searchInput = document.getElementById('search_input');
       const stationList = document.getElementById('mrt_list');
@@ -232,7 +278,7 @@
         url = "/attraction/" + id
         window.location.assign(url);
       }
-    
+     
   });
 
     
