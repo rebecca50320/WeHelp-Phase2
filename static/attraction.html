@@ -4,8 +4,214 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Attraction</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  <!-- Header: Navigation -->
+  <div class="l-container">
+    <div class="l-navigation">
+      <div class="l-title">
+        <h2>台北一日遊</h2>
+      </div>
+      <div class="l-navbar">
+        <div class="l-bookbutton">
+          <a href="">預定行程</a>
+        </div>
+        <div class="l-loginbutton">
+          <a href="">登入/註冊</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Picture & Profile: Section -->
+  <div class="att-section">
+    <div class="att-slide-container">
+      <div class="att-slideshow" id="att_slideshow"></div>
+      <div class="att-prev">
+        <button onclick="changeSlide(-1)"><img src="/static/img/att_leftArrow.png"></button>
+      </div>
+      <div class="att-next">
+        <button onclick="changeSlide(1)"><img src="/static/img/att_rightArrow.png"></button>
+      </div>
+      <div class="att-dot-container" id="att_dot_container"></div>
+    
+    </div>
+
+    <div class="att-profile">
+      <div class="att-title" id="att_title">
+        <h1>平安鐘</h1>
+      </div>
+      <div class="att-tags" id="att_tags">
+        <p id="att_cat">公共藝術</p>
+        <p id="att_mrt">忠孝復興</p>
+      </div>
+    
+      <div class="att-bookingform">
+        <h3>訂購導覽行程</h3>
+        <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
+        <div class="m-datepicker">
+          <h3>選擇日期：</h3>
+          <input type="date">
+        </div>
+        <div class="m-timepicker">
+          <h3>選擇時間：</h3>
+          <div class="radio-group">
+            <input type="radio" class="radio-input" id="1" name="time-picker" value="am" checked>
+            <label for="1" class="radio-label">
+             <span class="radio-button"></span>
+             上半天
+            </label>
+          </div>
+          <div class="radio-group">
+            <input type="radio" class="radio-input" id="2" name="time-picker" value="pm">
+            <label for="2" class="radio-label">
+              <span class="radio-button"></span>
+              下半天
+            </label>
+          </div>
+          
+        </div>
+        <h3>導覽費用： <span id="fee">新台幣 2000 元</span></h3>
+        <div class="att-btn-booking">
+          <button>開始預約行程</button>
+        </div>
+        
+      </div> 
+    </div>
+
+  </div>
+
+  <hr class="hr-wide">
+
+  <!-- Information: Infors -->
+  <div class="att-infors">
+    <div class="att-descrip">
+      <p id="att_descrip">北投溫泉從日據時代便有盛名，深受喜愛泡湯的日人自然不會錯過，瀧乃湯、星乃湯、鐵乃湯就是日本人依照溫泉的特性與療效給予的名稱，據說對皮膚病、神經過敏、氣喘、風濕等具有很好的療效，也因此成為了北部最著名的泡湯景點之一。新北投溫泉的泉源為大磺嘴溫泉，泉質屬硫酸鹽泉，PH值約為3~4之間，水質呈黃白色半透明，泉水溫度約為50-90℃，帶有些許的硫磺味 。目前北投的溫泉旅館、飯店、會館大部分集中於中山路、光明路沿線以及北投公園地熱谷附近，總計約有44家，每一家都各有其特色，多樣的溫泉水療以及遊憩設施，提供遊客泡湯養生，而鄰近的景點也是非常值得造訪，例如被列為三級古蹟的三寶吟松閣、星乃湯、瀧乃湯以及北投第一家溫泉旅館「天狗庵」，都有著深遠的歷史背景，而北投公園、北投溫泉博物館、北投文物館、地熱谷等，更是遊客必遊的景點，來到北投除了可以讓溫泉洗滌身心疲憊，也可以順便了解到北投溫泉豐富的人文歷史。</p>
+    </div>
+    <div class="att-address">
+      <h3>景點地址：</h3>
+      <p id="att_address">臺北市  北投區中山路、光明路沿線</p>
+    </div>
+    
+    <div class="att-transport">
+      <h3>交通方式：</h3>
+      <p id="att_transport">新北投站下車，沿中山路直走即可到達公車：216、218、223、230、266、602、小6、小7、小9、、小22、小25、小26至新北投站下車</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="l-footer" id="footer">
+    <div class="l-textbox">
+      <p>COPYRIGHT © 2024 台北一日遊</p>
+    </div>
+  </div>
+
+
+  <!-- Javascript -->
+  <script>
+    let slideIndex = 0;
+    document.addEventListener("DOMContentLoaded", function() {
+      pathname = window.location.pathname;
+      api_url = '/api' + pathname;
+      fetch(api_url)
+        .then(response => response.json())
+        .then(data => {
+          appendDataToContainer(data["data"]);
+          showSlides(slideIndex);
+        });
+
+      
+      
+      
+
+      function appendDataToContainer(data){
+        const att_title = document.getElementById('att_title');
+        att_title.querySelector('h1').textContent = data["name"];
+        document.getElementById('att_cat').textContent = data["category"];
+        document.getElementById('att_mrt').textContent = "at " + data["mrt"];
+        document.getElementById('att_descrip').textContent = data["description"];
+        document.getElementById('att_address').textContent = data["address"];
+        document.getElementById('att_transport').textContent = data["transport"];
+        //Append Img
+        const slideshow = document.getElementById('att_slideshow');
+        const dot_con = document.getElementById('att_dot_container');
+        img_cnt = data["images"].length;
+        for (let i=0; i<img_cnt;i++){
+          const slide = document.createElement("div");
+          // if (i==0){
+          //   slide.classList.add('att-slide.active');
+          // }
+          // else{
+          //   slide.classList.add('att-slide');
+          // }
+          slide.classList.add('att-slide');
+          const img = document.createElement("img");
+          img.src = data["images"][i];
+          img.classList.add('att-slide-img');
+          slide.appendChild(img);
+          slideshow.appendChild(slide);
+          //create dots
+          const dot = document.createElement("span");
+          dot.classList.add('att-dot');
+          dot.onclick = function(){
+            currentSlide(i+1);
+          }
+          dot_con.appendChild(dot);
+        }
+      }
+      // Time Picker
+      const radios = document.querySelectorAll('input[name="time-picker"]');
+      const feeSpan = document.getElementById('fee');
+      function changeFee(){
+        const selectedRadio = document.querySelector('input[name="time-picker"]:checked');
+          if (selectedRadio.value === 'am') {
+              feeSpan.textContent = '新台幣 2000 元';
+          } else if (selectedRadio.value === 'pm') {
+              feeSpan.textContent = '新台幣 2500 元';
+          }      
+      }
+      radios.forEach(radio => {
+        radio.addEventListener('change', changeFee);
+      });
+
+
+
+    });
+
+    // let slideIndex = 0;
+    // showSlides(slideIndex);
+
+    function changeSlide(n) {
+        showSlides(slideIndex += n);
+      }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n - 1);
+    }
+    function showSlides(n) {
+        let slides = document.querySelectorAll(".att-slide");
+        //console.log(slides);
+        let dots = document.querySelectorAll(".att-dot");
+        if (n >= slides.length) {
+            slideIndex = 0;
+        }
+        if (n < 0) {
+            slideIndex = slides.length - 1;
+        }
+        slides.forEach((slide, index) => {
+            slide.style.display = "none";
+            dots[index].className = dots[index].className.replace(" active", "");
+        });
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].className += " active";
+      };
+
+      
+    
+  </script>
   
 </body>
 </html>
