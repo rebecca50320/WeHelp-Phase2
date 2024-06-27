@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <!-- Pop-Up: signin/signup -->
+  <!-- Pop-Up: signin -->
   <div class="m-signin" id="loggin_popup" style="display: none">
     <div class="l-decorator"></div>
     <div class="l-popup-container">
@@ -34,18 +34,18 @@
       <button>登入帳戶</button>
       <p>還沒有帳戶？<a href="#" onclick="showSignupForm()">點此註冊</a></p>
     </div>
-
   </div>
+  <!-- Pop-Up: signup -->
   <div class="m-signin" id="signup_popup" style="display: none">
     <div class="l-decorator"></div>
     <div class="l-popup-container">
       <img src="/static/img/icon_close.png" onclick="closePopup()">
       <h1>註冊會員帳號</h1>
-      <input type="text" placeholder="輸入姓名" id="name_input">
-      <input type="text" placeholder="輸入電子信箱" id="email_input">
-      <input type="text" placeholder="輸入密碼" id="password_input">
-      <button>註冊新帳戶</button>
-      <p>已經有帳戶了？<a href="#" onclick="showLoginForm()">點此登入</a></p>
+      <input type="text" placeholder="輸入姓名" id="new_name_input">
+      <input type="text" placeholder="輸入電子信箱" id="new_email_input">
+      <input type="text" placeholder="輸入密碼" id="new_password_input">
+      <button id="signup_btn">註冊新帳戶</button>
+      <p id="signup_msg">已經有帳戶了？<a href="#" onclick="showLoginForm()">點此登入</a></p>
     </div>
 
   </div>
@@ -116,7 +116,8 @@
     function showLoginForm() {
       signup_popup.style.display = 'none';
       loggin_popup.style.display = 'block';
-}
+    }
+    
 
     document.addEventListener("DOMContentLoaded", function() {
       const searchInput = document.getElementById('search_input');
@@ -278,6 +279,42 @@
         url = "/attraction/" + id
         window.location.assign(url);
       }
+    
+
+      // SignUp
+      const signup_msg = document.getElementById('signup_msg');
+      async function signUp(name,email,password){
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      try {
+        const response = await fetch("/api/user", {
+          method: "POST",
+          body: formData
+          });
+
+        const data = await response.json();
+        if (data.ok){
+          // console.log("成功註冊，請重新登入");
+          signup_msg.textContent = "成功註冊，請重新登入";
+        }else{
+          // console.log(data.message);
+          signup_msg.textContent = data.message;
+        }
+        
+      }catch(error) {
+        console.error("There was a problem with the fetch operation:", error);
+        }
+    }
+    document.getElementById("signup_btn").addEventListener("click", async function(event) {
+      event.preventDefault();
+      const name = document.getElementById("new_name_input").value;
+      const email = document.getElementById("new_email_input").value;
+      const password = document.getElementById("new_password_input").value;
+      await signUp(name,email,password);
+    });
+      
      
   });
 
