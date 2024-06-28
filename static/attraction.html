@@ -11,17 +11,46 @@
   <div class="l-container">
     <div class="l-navigation">
       <div class="l-title">
-        <h2>台北一日遊</h2>
+        <a href="/">台北一日遊</a>
       </div>
       <div class="l-navbar">
         <div class="l-bookbutton">
-          <a href="">預定行程</a>
+          <p>預定行程</p>
         </div>
-        <div class="l-loginbutton">
-          <a href="">登入/註冊</a>
+        <div class="l-loginbutton" id="login" onclick="showPopup()" style="display:none">
+          <p>登入/註冊</p>
+        </div>
+        <div class="l-loginbutton" id="signout" onclick="signOut()" style="display:none">
+          <p>登出系統</p>
         </div>
       </div>
     </div>
+  </div>
+  <!-- Pop-Up: signin -->
+  <div class="m-signin" id="loggin_popup" style="display: none">
+    <div class="l-decorator"></div>
+    <div class="l-popup-container">
+      <img src="/static/img/icon_close.png" onclick="closePopup()">
+      <h1>登入會員帳號</h1>
+      <input type="text" placeholder="輸入電子信箱" id="email_input">
+      <input type="text" placeholder="輸入密碼" id="password_input">
+      <button id="signin_btn">登入帳戶</button>
+      <p id="'signin_msg'">還沒有帳戶？<a href="#" onclick="showSignupForm()">點此註冊</a></p>
+    </div>
+  </div>
+  <!-- Pop-Up: signup -->
+  <div class="m-signin" id="signup_popup" style="display: none">
+    <div class="l-decorator"></div>
+    <div class="l-popup-container">
+      <img src="/static/img/icon_close.png" onclick="closePopup()">
+      <h1>註冊會員帳號</h1>
+      <input type="text" placeholder="輸入姓名" id="new_name_input">
+      <input type="text" placeholder="輸入電子信箱" id="new_email_input">
+      <input type="text" placeholder="輸入密碼" id="new_password_input">
+      <button id="signup_btn">註冊新帳戶</button>
+      <p id="signup_msg">已經有帳戶了？<a href="#" onclick="showLoginForm()">點此登入</a></p>
+    </div>
+
   </div>
 
   <hr>
@@ -112,6 +141,44 @@
 
   <!-- Javascript -->
   <script>
+    // Signin/up Pop Up
+    const loggin_popup = document.getElementById('loggin_popup');
+    const signup_popup = document.getElementById('signup_popup');
+    const loggin_btn = document.getElementById('login');
+    const signout_btn = document.getElementById('signout');
+      
+    function showPopup(){
+      loggin_popup.style.display = 'block';
+    }
+    function closePopup(){
+      loggin_popup.style.display = 'none';
+      signup_popup.style.display = 'none';
+    }
+    function showSignupForm() {
+      loggin_popup.style.display = 'none';
+      signup_popup.style.display = 'block';
+    }
+    function showLoginForm() {
+      signup_popup.style.display = 'none';
+      loggin_popup.style.display = 'block';
+    }
+    function showSignoutBtn(){
+      loggin_btn.style.display = 'none';
+      signout_btn.style.display = 'block';
+    }
+    function showSigninBtn(){
+      loggin_btn.style.display = 'block';
+      signout_btn.style.display = 'none';
+    }
+    // SignOut
+    function signOut(){
+      localStorage.setItem('token', null);
+      showSigninBtn();
+      console.log(localStorage.token);
+      console.log("登出");
+    }
+
+
     let slideIndex = 0;
     document.addEventListener("DOMContentLoaded", function() {
       pathname = window.location.pathname;
@@ -122,10 +189,7 @@
           appendDataToContainer(data["data"]);
           showSlides(slideIndex);
         });
-
-      
-      
-      
+      statusCheck();
 
       function appendDataToContainer(data){
         const att_title = document.getElementById('att_title');
@@ -141,12 +205,6 @@
         img_cnt = data["images"].length;
         for (let i=0; i<img_cnt;i++){
           const slide = document.createElement("div");
-          // if (i==0){
-          //   slide.classList.add('att-slide.active');
-          // }
-          // else{
-          //   slide.classList.add('att-slide');
-          // }
           slide.classList.add('att-slide');
           const img = document.createElement("img");
           img.src = data["images"][i];
@@ -176,6 +234,103 @@
       radios.forEach(radio => {
         radio.addEventListener('change', changeFee);
       });
+
+      // SignIn
+      const signin_msg = document.getElementById('signin_msg');
+      async function signIn(email,password){
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      try {
+        const response = await fetch("/api/user/auth", {
+          method: "PUT",
+          body: formData
+          });
+
+        const data = await response.json();
+        if (data.token){
+          localStorage.setItem('token', data.token);
+          console.log(localStorage.token)
+          statusCheck();
+          closePopup();
+        }else{
+          signin_msg.textContent = data.message;
+        }
+        
+      }catch(error) {
+        console.error("There was a problem with the fetch operation:", error);
+        }
+      }
+      document.getElementById("signin_btn").addEventListener("click", async function(event) {
+        event.preventDefault();
+        const email = document.getElementById("email_input").value;
+        const password = document.getElementById("password_input").value;
+        await signIn(email,password);
+      });
+      
+    
+      
+
+      // SignUp
+      const signup_msg = document.getElementById('signup_msg');
+      async function signUp(name,email,password){
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        try {
+          const response = await fetch("/api/user", {
+            method: "POST",
+            body: formData
+            });
+
+          const data = await response.json();
+          if (data.ok){
+            // console.log("成功註冊，請重新登入");
+            signup_msg.textContent = "成功註冊，請重新登入";
+          }else{
+            // console.log(data.message);
+            signup_msg.textContent = data.message;
+          }
+          
+        }catch(error) {
+          console.error("There was a problem with the fetch operation:", error);
+        }
+      }
+      document.getElementById("signup_btn").addEventListener("click", async function(event) {
+        event.preventDefault();
+        const name = document.getElementById("new_name_input").value;
+        const email = document.getElementById("new_email_input").value;
+        const password = document.getElementById("new_password_input").value;
+        await signUp(name,email,password);
+      });
+
+      //確認登入狀態
+      async function statusCheck(){
+        const token = localStorage.getItem("token");
+        try {
+          const response = await fetch("/api/user/auth", {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+          console.log("檢查狀態ing")
+          const data = await response.json();
+          console.log(data.data);
+          if (data.data){
+            console.log("token有效");
+            showSignoutBtn();
+          }else{
+            localStorage.setItem('token', null);
+            console.log("未登入")
+            showSigninBtn();
+          }
+          
+        }catch(error) {
+          console.error("There was a problem with the fetch operation:", error);
+        }
+      }
 
 
 

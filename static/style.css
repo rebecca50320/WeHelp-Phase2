@@ -88,7 +88,7 @@ a {
     justify-content: space-between;
     align-items: center;
 }
-.l-navigation h2{
+.l-navigation a{
     font-size: 30px;
     font-weight: 700;
     color: #448899;

@@ -132,38 +132,62 @@ async def sign_up(name:str = Form(...),email:str = Form(...), password:str = For
 
 # 會員狀態檢查
 @app.get("/api/user/auth")
-async def check_status():
-    pass
+async def check_status(Authorization: str = Header()) -> Optional[dict]:
+    try:
+        if Authorization:
+            token = Authorization.split(" ")[1]
+            payload = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+            email = payload["email"]
+            sql_command = "select id,name from member where email = %s"
+            cursor.execute(sql_command,(email,))
+            result = cursor.fetchone()
+            if result:
+                id = result[0]
+                name = result[1]
+                return {"data":{"id":id, "name":name, "email":email}}
+            else:
+                raise HTTPException(status_code=400, detail="無有效Token")
+        else:
+            raise HTTPException(status_code=400, detail="尚未成為會員")
+      
+        
+    except HTTPException as e: #有定義的error
+        raise e
+    except Exception as e: #未定義的error顯示為500
+        raise HTTPException(status_code=500, detail="Internal Error")
 
 
 # 會員登入
 @app.put("/api/user/auth")
-async def sign_in(email:str = Form(...), password:str = Form(...)):
+async def sign_in(email:str = Form(None), password:str = Form(None)):
     try:
-        sql_command = "select count(*) from member where email = %s "
-        cursor.execute(sql_command,(email,))
-        result = cursor.fetchone()
-        if result[0]>0: #有註冊
-            sql_command = "select id,name,password from member where email = %s"
+        if email is not None and password is not None:
+            sql_command = "select count(*) from member where email = %s "
             cursor.execute(sql_command,(email,))
             result = cursor.fetchone()
-            if result[2] == password:
-                id = result[0]
-                name = result[1]
-                payload = {
-                'id': id,
-                'name': name,
-                'email': email,
-                'password': password,
-                'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)  # Token expiration time
-                }
-                token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-                return {"token":token}
+            if result[0]>0: #有註冊
+                sql_command = "select id,name,password from member where email = %s"
+                cursor.execute(sql_command,(email,))
+                result = cursor.fetchone()
+                if result[2] == password:
+                    id = result[0]
+                    name = result[1]
+                    payload = {
+					'id': id,
+					'name': name,
+					'email': email,
+					'password': password,
+					'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)  # Token expiration time
+					}
+                    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+                    return {"token":token}
+                else:
+                    raise HTTPException(status_code=400, detail="密碼不正確")
             else:
-                raise HTTPException(status_code=400, detail="密碼不正確")
-
+                raise HTTPException(status_code=400, detail="此信箱尚未註冊")			
         else:
-            raise HTTPException(status_code=400, detail="此信箱尚未註冊")
+            raise HTTPException(status_code=400, detail="信箱、密碼不能為空") 
+        
     except HTTPException as e: #有定義的error
         raise e
     except Exception as e: #未定義的error顯示為500
